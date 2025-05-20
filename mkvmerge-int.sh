@@ -10,7 +10,7 @@
 #   * Script defaults to safest options for discard and deletion (explicit confirmation)
 #   * Future plans include: codec info, attachment selection, strict confirmation cases,
 #                           command line options (e.g., specify files, force to streamline),
-#                           ffmpeg integration, additional mkvmerge opts
+#                           ffmpeg integration, additional mkvmerge opts, tagging
 # 
 
 SUFX="EN" # suffix for avoiding overwriting, can be very simple
