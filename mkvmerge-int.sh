@@ -15,14 +15,15 @@
 
 SUFX="EN" # suffix for avoiding overwriting, can be very simple
 
-############################################ DO NOT ALTER ############################################
+############################################ CHANGE AT OWN RISK ############################################
 
+#!/bin/bash
 for i in *.mkv; do \
 echo && echo "${i%.mkv}" && echo && \
 mediainfo --Inform="Audio;Audio ID %StreamOrder%: %Language/String%\n" "${i}" && \
 mediainfo --Inform="Text;Subs ID %StreamOrder%: %Language/String%\n" "${i}" && \
 read -p 'Comma-separated AUDIO track number(s): ' ATRK && \
-read -p 'Comma-separated SUBTITLE track number(s) or "none" to discard all subs: ' STRK && \
+read -p 'Comma-separated SUBTITLE track number(s), "all" to preserve, "none" to discard all subs: ' STRK && \
 read -p 'Discard attachments? (yes/no): ' NOAT && \
 read -p 'Delete original file? (yes/no): ' RMOG && echo && \
 case "${ATRK}" in
@@ -30,16 +31,16 @@ case "${ATRK}" in
   *) AUDIO="";;
 esac && \
 case "${STRK}" in
-  [1-9]|[1-9][1-9]|[1-9],[1-9]|[1-9][1-9],[1-9][1-9]) SUBS=" -s ${STRK}";;
+  [Aa]ll) SUBS="";;
   [Nn]|[Nn]one) SUBS=" -S";;
-  *) SUBS="";;
+  *) SUBS=" -s ${STRK}";;
 esac && \
 case "${NOAT}" in
   true|True|TRUE|t|yes|Yes|YES|y|Y) ATCH="-M";;
   *) ATCH="";;
 esac && \
 OPTS="${ATCH}${AUDIO}${SUBS}" && \
-FILE="${i%mkv}${SUFX}.mkv" && \
+FILE="${i%mkv}EN.mkv" && \
 echo "Confirm selections:" && echo && \
   echo "    Audio tracks:         ${ATRK}" && \
   echo "    Subtitle tracks:      ${STRK}" && \
@@ -52,6 +53,6 @@ case "${SGO}" in
 esac && \
 case "${RMOG}" in
   [Yy]|[Yy]es) echo "Deleting original file..." && rm "${i}";;
-  *) $(echo 'Preserving original file...');;
+  *) echo 'Preserving original file...';;
 esac && \
 echo "Operation complete."; done
